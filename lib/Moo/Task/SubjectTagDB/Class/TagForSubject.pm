@@ -9,6 +9,8 @@ with qw/
   Moo::GenericRole::DB::Abstract
   Moo::GenericRole::DB::SQLite
   Moo::Task::SubjectTagDB::Role::DB::AbstractSQLite
+	Moo::Task::SubjectTagDB::Role::Core
+	Moo::Task::SubjectTagDB::Role::Linux
   /;
 use Data::Dumper;
 
