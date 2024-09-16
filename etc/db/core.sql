@@ -2,15 +2,15 @@
 /* subject */
 CREATE TABLE subject (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT NOT NULL
+	string TEXT NOT NULL
 );
-CREATE INDEX subject_name ON subject(name);
+CREATE INDEX subject_name ON subject(string);
 
 CREATE TABLE tag (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
-	name TEXT NOT NULL
+	string TEXT NOT NULL
 );
-CREATE INDEX tag_name ON tag(name);
+CREATE INDEX tag_name ON tag(string);
 
 
 /* subject_tag*/

@@ -1,7 +1,7 @@
 # ABSTRACT : Do DB Things using SQLite + SQL Abstract in TagForSubject
 package Moo::Task::SubjectTagDB::Role::DB::AbstractSQLite;
-our $VERSION = 'v1.0.3';
-##~ DIGEST : fb4e44ed1ce0cc1bad40dfe6c4b27912
+our $VERSION = 'v2.0.2';
+##~ DIGEST : d9b28a998b2b3d5cf2739cfb9e63dd0a
 use Moo::Role;
 use Carp qw(cluck confess);
 
@@ -16,10 +16,16 @@ with qw/
 	the _original_ used a caching system
 =cut
 
+#TODO: subject alias - given subject string, determine if it has an alias
 ## String to number methods
 sub get_subject_id {
 	my ( $self, $string ) = @_;
 	return $self->select_insert_string_id( $string, 'subject' );
+}
+
+sub read_subject_id {
+	my ( $self, $string ) = @_;
+	return $self->select( 'subject', [qw/*/], {string => $string} )->fetchrow_hashref();
 }
 
 sub get_tag_id {
