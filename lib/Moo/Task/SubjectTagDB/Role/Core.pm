@@ -1,7 +1,7 @@
-# ABSTRACT : Universal activities regardless
+# ABSTRACT : implementation agnostic methods
 package Moo::Task::SubjectTagDB::Role::Core;
-our $VERSION = 'v2.0.3';
-##~ DIGEST : 9bfd71374121975270011516b669cd44
+our $VERSION = 'v2.0.4';
+##~ DIGEST : 78c0573e994c7250ef305dcb1d961dfd
 use Moo::Role;
 use Carp qw(cluck confess);
 
@@ -17,6 +17,18 @@ sub process_single_tag_string {
 	}
 	chomp( $tag );
 	return $tag;
+}
+
+sub search_tag_string {
+	my ( $self, $string, $want_number, $page ) = @_;
+	my @tags = map { '"' . lc( $_ ) . '"' } split( ' ', $string );
+	return $self->search_tag_array(
+		\@tags,
+		{
+			rows => $want_number || 20,
+			page => $page        || 1
+		}
+	);
 }
 
 1;
