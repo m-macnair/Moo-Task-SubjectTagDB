@@ -1,8 +1,8 @@
 package Moo::Task::SubjectTagDB::Class::TagForSubject;
 
-our $VERSION = 'v1.0.5';
+our $VERSION = 'v1.0.6';
 
-##~ DIGEST : 105d49395a78b23857b017cecbb4674c
+##~ DIGEST : 7ef097479ff0e26f6f055180316ca840
 use Moo;
 with qw/
   Moo::GenericRole::DB
@@ -10,7 +10,6 @@ with qw/
   Moo::GenericRole::DB::SQLite
   Moo::Task::SubjectTagDB::Role::DB::AbstractSQLite
   Moo::Task::SubjectTagDB::Role::Core
-  Moo::Task::SubjectTagDB::Role::Linux
   /;
 use Data::Dumper;
 

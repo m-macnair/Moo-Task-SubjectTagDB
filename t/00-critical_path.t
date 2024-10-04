@@ -34,7 +34,15 @@ $self = new_ok( $module, [ {db_file => $test_db} ] );
 $self->sqlite3_file_to_dbh( $test_db );
 my $subject_id = $self->get_subject_id( 'subject 1' );
 ok( $subject_id == 1, 'created subject 1' );
-my $res = $self->apply_tag_string_to_subject( 'funky fresh beats', $subject_id );
-is( scalar( @{$res} ), 3, 'Assigned 3 tags to subject 1' );
+
+{
+	my $res = $self->tag_this_subject_id( $subject_id, [qw/funky fresh beats/] );
+	is( scalar( @{$res} ), 3, 'Assigned 3 tags to subject 1' );
+}
+
+{
+	my $res = $self->intersect_search_arref_subject_ids( [qw/funky fresh/] );
+	is( $res->[0], 1, 'Got subject 1 from intersect search' );
+}
 
 done_testing();
