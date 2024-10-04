@@ -1,7 +1,7 @@
 # ABSTRACT : Do DB Things using SQLite + SQL Abstract in TagForSubject
 package Moo::Task::SubjectTagDB::Role::DB::AbstractSQLite;
-our $VERSION = 'v2.0.6';
-##~ DIGEST : c5d0d1058d2d5edc9845737f0f50edfc
+our $VERSION = 'v2.0.8';
+##~ DIGEST : 27079947804e412fac3e327300eab43f
 use Moo::Role;
 use Carp qw(cluck confess);
 
@@ -114,25 +114,24 @@ sub search_tag_array {
 sub intersect_search_arref_subject_ids {
 	my ( $self, $search_tag_arref, $p ) = @_;
 
-	#step 1; get tag ids
-	my @tag_ids = @{$self->tag_arref_to_id_aref( $search_tag_arref )};
-
-	#step 2 get subject_tag entries
 	my ( @q_strings, @binds );
-	warn Dumper( \@tag_ids );
-	for my $tag_id ( @tag_ids ) {
+
+	for my $tag_id ( @{$search_tag_arref} ) {
 		my ( $q_string, $bind ) = $self->sqla->select( 'subject_tag', [qw/subject_id/], {tag_id => $tag_id} );
 		push( @q_strings, $q_string );
 		push( @binds,     $bind );
 	}
 	my $limit  = $p->{rows} || 20;
-	my $offset = $p->{page} ||= 0;
+	my $offset = $p->{page} ||= 1;
 	$offset = ( $offset - 1 ) * $limit;
 
 	my $q_string = join( "$/ INTERSECT $/", @q_strings );
 	$q_string .= ' limit ? offset ?';
+
 	my $intersect_sth = $self->query( $q_string, @binds, $limit, $offset );
-	return $self->get_column_array( $intersect_sth );
+	my $result        = $self->get_column_array( $intersect_sth );
+
+	return $result;
 }
 
 1;
