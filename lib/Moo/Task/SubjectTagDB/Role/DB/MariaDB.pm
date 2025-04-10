@@ -1,4 +1,4 @@
-# ABSTRACT : Do DB Things using SQLite + SQL Abstract in TagForSubject
+# ABSTRACT : Do DB Things using MariaDB + SQL Abstract in TagForSubject
 package Moo::Task::SubjectTagDB::Role::DB::MariaDB;
 our $VERSION = 'v2.0.9';
 ##~ DIGEST : e31550b1c9310d012f4f7f4722937672
