@@ -1,7 +1,7 @@
 # ABSTRACT : Do DB Things using  SQL Abstract in TagForSubject
 package Moo::Task::SubjectTagDB::Role::DB;
-our $VERSION = 'v2.0.9';
-##~ DIGEST : 87b99f7cdb4350b784f22bb64d71b761
+our $VERSION = 'v2.1.0';
+##~ DIGEST : 8c85e8042cbb0c06d7ddb08c54359063
 use Moo::Role;
 use Carp qw(cluck confess);
 
@@ -20,23 +20,35 @@ with qw/
 ## String to number methods
 sub get_subject_id {
 	my ( $self, $string ) = @_;
-	return $self->select_insert_string_id( $string, 'subject' );
+
+	my ( $id,$row, $is_new ) = $self->select_insert_string_id( $string, 'subject' );
+	if ( wantarray() ) {
+		return ( $id,$row, $is_new );
+	} else {
+		return $id;
+	}
 }
 
 sub read_subject_id {
 	my ( $self, $string ) = @_;
 	return $self->select( 'subject', [qw/*/], {string => $string} )->fetchrow_hashref();
+
 }
 
 sub get_tag_id {
 	my ( $self, $string, $p ) = @_;
-	return $self->select_insert_string_id( $string, 'tag' );
+	my ( $row, $is_new ) = $self->select_insert_string_id( $string, 'tag' );
+	if ( wantarray() ) {
+		return ( $row, $is_new );
+	} else {
+		return $row;
+	}
 }
 
 sub get_subject_tag_id {
 	my ( $self, $subject_id, $tag_id ) = @_;
 	Carp::confess( "Subject ID not provided" ) unless $subject_id;
-	$self->select_insert_href(
+	my ( $row, $is_new ) = $self->select_insert_href(
 		'subject_tag',
 		{
 			subject_id => $subject_id,
@@ -45,6 +57,12 @@ sub get_subject_tag_id {
 
 		#[qw/id/]
 	);
+
+	if ( wantarray() ) {
+		return ( $row, $is_new );
+	} else {
+		return $row;
+	}
 }
 
 #tag_subject_id is a method somewhere
